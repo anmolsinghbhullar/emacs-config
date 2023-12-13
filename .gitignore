@@ -1,0 +1,11 @@
+# macos specific files
+.DS_Store
+
+# emacs backup/other temporary files
+*~
+*.#*
+auto-save-list/
+
+# no need to include cache or user history
+eln-cache/
+history
