@@ -1,7 +1,6 @@
 ;; File: init.el
-;; Description: To be a config file to customize Emacs
-;; Package list: (TODO)
-;; Things left to add:
+;; Description: To be a config file to customize Emacs with a heavy emphasis on org-mode and journaling
+;; Package list: in README
 
 ;; loads the emacs package management system (built in as of emacs 29 iirc)
 (require 'package)
@@ -35,8 +34,6 @@
   :init
   (marginalia-mode))
 
-;; TODO show the process of finding this variable by showcasing “C-h v”
-
 ;; I like my IDEs to have line numbers for easier navigation
 (global-display-line-numbers-mode t)
 
@@ -69,9 +66,20 @@
   ;; sets the default file that stores org-capture notes
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   ;; tells emacs to look here for org-agenda files
-  (setq org-agenda-files '("~/org/"))
+  (setq org-files '("~/org/"))
   ;; enables native syntax
   (setq org-src-fontify-natively t))
+
+;; let's also adjust the startup process to show our agenda on startup
+(defun open-agenda-split ()
+  "Opens org-agenda and all todo items on left and another buffer on the right on startup."
+  (org-agenda nil "n")
+  (delete-other-windows)
+  (split-window-right)
+  (other-window 1)
+  (switch-to-buffer "*GNU Emacs*")
+  (other-window 1))
+(add-hook 'emacs-startup-hook #'open-agenda-split)
 
 ;; I also like to journal and there's a neat little package that makes it easy
 (use-package org-journal
@@ -114,6 +122,7 @@
        (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded\n"))))
   (setq org-journal-file-header 'org-journal-file-header-func))
 
+
 ;; Non-intel macbooks don't have native support for Scheme so Racket must be used to evaluate
 ;; (non-emacs) lisp code. Since I do work with lisp somewhat, I'll be installing it below:
 (use-package racket-mode
@@ -132,7 +141,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("/Users/anmol/org/notes.org" "/Users/anmol/org/workflow.org" "/Users/anmol/org/journal/2023-12-12.org"))
+   '("/Users/anmol/org/notes.org" "/Users/anmol/org/workflow.org" "/Users/anmol/org/journal/2023-12-13.org"))
  '(package-selected-packages
    '(racket-mode org-journal markdown-mode company marginalia vertico)))
 (custom-set-faces
